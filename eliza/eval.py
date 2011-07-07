@@ -1,5 +1,6 @@
 import time
 import random
+import re
 
 
 TIMES_UP = [
@@ -17,14 +18,24 @@ GO_ON = [
     "How appropriate. You fight like a cow.",
 ]
 
-SWEAR_WORDS = [
-	"Fuck",
-	"Shit"
+REGEX_RESPONSES = [
+    (re.compile(r'^I\s+(?!am|have)', re.I), [
+        "Is that because of your parents?",
+        "You are a beautiful human being. Remember that."
+    ]
+    ),
+    (re.compile(r'\b(father|mother)\b', re.I), [
+        "I think you may have an Oedipus complex."
+    ]),
+    (re.compile(r'\b(fuck|boobs)\b', re.I), [
+        "Do you suffer from Tourettes?"
+    ])
 ]
 
 class Eliza(object):
 
-    TIME_ALLOWED = 5
+    TIME_ALLOWED = 30
+
 
     def __init__(self):
         self.start = time.time()
@@ -32,12 +43,9 @@ class Eliza(object):
     def send(self, message):
         if time.time() - self.start > self.TIME_ALLOWED:
             return self.do_timeout()
-	messageWords = message.split(' ')
-	print messageWords
-
-	for word in messageWords:
-            if (word.in(SWEAR_WORDS)):
-	        return "Naughty!"
+        for regex, responses in REGEX_RESPONSES:
+            if regex.search(message):
+                return random.choice(responses)
         return random.choice(GO_ON)
 
     def do_timeout(self):

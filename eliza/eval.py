@@ -46,6 +46,10 @@ REGEX_RESPONSES = [
     ]),
 ]
 
+RORSCHACH_WORDS = [
+    'visual', 'look', 'test', 'rorschach', 'see',
+]
+
 class Eliza(object):
 
     TIME_ALLOWED = 30
@@ -58,7 +62,7 @@ class Eliza(object):
         if time.time() - self.start > self.TIME_ALLOWED:
             return self.do_timeout()
 
-        if 'test' in message:
+        if any(w in message for w in RORSCHACH_WORDS):
             response = 'What does this look like to you?'
             with open('rorchach.ascii') as fp:
                 response += fp.read()

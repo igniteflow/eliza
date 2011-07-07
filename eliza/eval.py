@@ -4,7 +4,7 @@ import re
 
 
 TIMES_UP = [
-    "That's very interesting, but I'm afraid our time is up. Same time next week?",
+    "This is very interesting, but I'm afraid our time is up. Same time next week?",
     "Sorry, you have to leave, my next client is waiting.",
     "I really have to ask you to leave now.",
     "The session is over, please go.",
@@ -26,6 +26,21 @@ REGEX_RESPONSES = [
     ),
     (re.compile(r'\b(father|mother)\b', re.I), [
         "I think you may have an Oedipus complex."
+    ]),
+    (re.compile(r'^hello|hi|greetings|bonjour|good (evening|afternoon|day|morning)', re.I), [
+        "Hello!",
+        "Hi, come in!",
+        "Hi.",
+        "Good evening"
+    ]),
+    (re.compile(r'^how\s+are\s+you\??', re.I), [
+        "I'm fine thanks. How are you?",
+        "Not bad, not bad.",
+        "Fine, thanks. Would you like to have a seat on the couch?",
+    ]),
+    (re.compile(r'^may I\s.*', re.I), [
+        "Whatever makes you feel comfortable.",
+        "Sure."
     ])
 ]
 
@@ -40,9 +55,15 @@ class Eliza(object):
     def send(self, message):
         if time.time() - self.start > self.TIME_ALLOWED:
             return self.do_timeout()
+        
+        response = question_response(message)
+        if response:
+            return response
+
         for regex, responses in REGEX_RESPONSES:
             if regex.search(message):
                 return random.choice(responses)
+            return "What does this image look like?"
         return random.choice(GO_ON)
 
     def do_timeout(self):
@@ -50,6 +71,21 @@ class Eliza(object):
             return TIMES_UP.pop(0)
         except IndexError:
             raise IOError("Connection closed.")
+
+
+QUESTION_WORDS = 'what', 'why', 'how', 'who', 'when'
+
+
+def question_response(message):
+    words = [word.lower() for word in message.split()]
+    if words[-1].endswith('?'):
+        words[-1] = words[-1][:-1]
+    if words[0] in QUESTION_WORDS:
+        response = "Why do you ask "
+        response += words[0] + ' '
+        response += ' '.join(words[2:]) + ' '
+        response += words[1] + '?'
+        return response
             
 
 def test_eliza():

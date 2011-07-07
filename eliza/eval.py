@@ -42,6 +42,9 @@ REGEX_RESPONSES = [
         "Whatever makes you feel comfortable.",
         "Sure."
     ])
+    (re.compile(r'\b(fuck|boobs|hell|damn|french|wanker|)\b', re.I), [
+        "Do you suffer from Tourettes?"
+    ]),
 ]
 
 class Eliza(object):
@@ -87,13 +90,5 @@ def question_response(message):
         response += words[1] + '?'
         return response
             
-
-def test_eliza():
-    e = Eliza()
-    while True:
-        print e.send('Hello')
-        time.sleep(0.5)
-
-
 if __name__ == '__main__':
     test_eliza()

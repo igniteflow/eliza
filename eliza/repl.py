@@ -12,7 +12,7 @@ def main():
 		if input == 'exit':
 			sys.exit(0)
 		
-		secs = random.randint(1, 3)
+		secs = random.uniform(1)
 		time.sleep(secs)
 		print eliza.send(input)
 

@@ -17,6 +17,11 @@ GO_ON = [
     "How appropriate. You fight like a cow.",
 ]
 
+SWEAR_WORDS = [
+	"Fuck",
+	"Shit"
+]
+
 class Eliza(object):
 
     TIME_ALLOWED = 5
@@ -27,6 +32,12 @@ class Eliza(object):
     def send(self, message):
         if time.time() - self.start > self.TIME_ALLOWED:
             return self.do_timeout()
+	messageWords = message.split(' ')
+	print messageWords
+
+	for word in messageWords:
+            if (word.in(SWEAR_WORDS)):
+	        return "Naughty!"
         return random.choice(GO_ON)
 
     def do_timeout(self):

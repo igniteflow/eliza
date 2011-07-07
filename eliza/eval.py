@@ -7,8 +7,7 @@ TIMES_UP = [
     "This is very interesting, but I'm afraid our time is up. Same time next week?",
     "Sorry, you have to leave, my next client is waiting.",
     "I really have to ask you to leave now.",
-    "The session is over, please go.",
-    "Very well, you leave me no option but to call security."
+    "Very well, you leave me no option. Security!"
 ]
 
 GO_ON = [
@@ -24,7 +23,7 @@ REGEX_RESPONSES = [
         "You are a beautiful human being. Remember that."
     ]
     ),
-    (re.compile(r'\b(father|mother)\b', re.I), [
+    (re.compile(r'\b(father|mother|parent|parents)\b', re.I), [
         "I think you may have an Oedipus complex."
     ]),
     (re.compile(r'^hello|hi|greetings|bonjour|good (evening|afternoon|day|morning)', re.I), [
@@ -41,9 +40,9 @@ REGEX_RESPONSES = [
     (re.compile(r'^may I\s.*', re.I), [
         "Whatever makes you feel comfortable.",
         "Sure."
-    ])
-    (re.compile(r'\b(fuck|boobs|hell|damn|french|wanker|)\b', re.I), [
-        "Do you suffer from Tourettes?"
+    ]),
+    (re.compile(r'\b(penis|willy|dick|cock)\b', re.I), [
+        "I diagnose tourettes. Please remain lying down.",
     ]),
 ]
 
@@ -58,16 +57,23 @@ class Eliza(object):
     def send(self, message):
         if time.time() - self.start > self.TIME_ALLOWED:
             return self.do_timeout()
+
+        if 'test' in message:
+            response = 'What does this look like to you?'
+            with open('rorchach.ascii') as fp:
+                response += fp.read()
+                return response
+
+        for regex, responses in REGEX_RESPONSES:
+            if regex.search(message):
+                return random.choice(responses)
         
         response = question_response(message)
         if response:
             return response
 
-        for regex, responses in REGEX_RESPONSES:
-            if regex.search(message):
-                return random.choice(responses)
-            return "What does this image look like?"
         return random.choice(GO_ON)
+
 
     def do_timeout(self):
         try:

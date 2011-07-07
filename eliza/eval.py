@@ -1,5 +1,6 @@
 import time
 import random
+import re
 
 
 TIMES_UP = [
@@ -17,9 +18,21 @@ GO_ON = [
     "How appropriate. You fight like a cow.",
 ]
 
+REGEX_RESPONSES = [
+    (re.compile(r'^I\s+(?!am|have)', re.I), [
+        "Is that because of your parents?",
+        "You are a beautiful human being. Remember that."
+    ]
+    ),
+    (re.compile(r'\b(father|mother)\b', re.I), [
+        "I think you may have an Oedipus complex."
+    ])
+]
+
 class Eliza(object):
 
-    TIME_ALLOWED = 5
+    TIME_ALLOWED = 30
+
 
     def __init__(self):
         self.start = time.time()
@@ -27,6 +40,9 @@ class Eliza(object):
     def send(self, message):
         if time.time() - self.start > self.TIME_ALLOWED:
             return self.do_timeout()
+        for regex, responses in REGEX_RESPONSES:
+            if regex.search(message):
+                return random.choice(responses)
         return random.choice(GO_ON)
 
     def do_timeout(self):

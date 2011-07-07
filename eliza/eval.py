@@ -19,14 +19,14 @@ GO_ON = [
 
 class Eliza(object):
 
-    TIME_ALLOWED = 30
+    TIME_ALLOWED = 5
 
     def __init__(self):
         self.start = time.time()
 
     def send(self, message):
         if time.time() - self.start > self.TIME_ALLOWED:
-            self.do_timeout()
+            return self.do_timeout()
         return random.choice(GO_ON)
 
     def do_timeout(self):

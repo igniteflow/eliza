@@ -55,7 +55,7 @@ RORSCHACH_WORDS = [
 
 class Eliza(object):
 
-    TIME_ALLOWED = 30
+    TIME_ALLOWED = 40
 
 
     def __init__(self):

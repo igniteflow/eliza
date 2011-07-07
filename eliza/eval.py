@@ -27,9 +27,9 @@ REGEX_RESPONSES = [
     (re.compile(r'\b(father|mother)\b', re.I), [
         "I think you may have an Oedipus complex."
     ]),
-    (re.compile(r'\b(fuck|boobs)\b', re.I), [
+    (re.compile(r'\b(fuck|boobs|hell|damn|french|wanker|)\b', re.I), [
         "Do you suffer from Tourettes?"
-    ])
+    ]),
 ]
 
 class Eliza(object):
@@ -54,13 +54,5 @@ class Eliza(object):
         except IndexError:
             raise IOError("Connection closed.")
             
-
-def test_eliza():
-    e = Eliza()
-    while True:
-        print e.send('Hello')
-        time.sleep(0.5)
-
-
 if __name__ == '__main__':
     test_eliza()

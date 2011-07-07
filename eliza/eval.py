@@ -89,7 +89,14 @@ class Eliza(object):
             raise IOError("Connection closed.")
 
 
-QUESTION_WORDS = 'what', 'why', 'how', 'who', 'when'
+QUESTION_WORDS = 'what', 'why', 'how', 'who', 'when', 'where'
+
+
+replacements = {
+    'you': 'I',
+    'I': 'you',
+    'are': 'am',
+}
 
 
 def question_response(message):
@@ -97,6 +104,9 @@ def question_response(message):
     if words[-1].endswith('?'):
         words[-1] = words[-1][:-1]
     if words[0] in QUESTION_WORDS:
+        for i, word in enumerate(words):
+            if word in replacements:
+                words[i] = replacements[word]
         response = "Why do you ask "
         response += words[0] + ' '
         response += ' '.join(words[2:]) + ' '

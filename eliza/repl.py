@@ -5,6 +5,7 @@ import random
 eliza = Eliza()
 
 def main():
+	eliza = Eliza()
 	while True:
 		input = raw_input('--> ')
 		secs = random.randint(1, 3)

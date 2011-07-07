@@ -1,8 +1,13 @@
 from eval import Eliza
+import time
+import random
+
+eliza = Eliza()
 
 def main():
 	while True:
 		input = raw_input('--> ')
-		eliza = Eliza()
+		secs = random.randint(1, 3)
+		time.sleep(secs)
 		print eliza.send(input)
 

@@ -44,6 +44,9 @@ REGEX_RESPONSES = [
     (re.compile(r'\b(penis|willy|dick|cock)\b', re.I), [
         "I diagnose tourettes. Please remain lying down.",
     ]),
+    (re.compile(r"^I'm\b", re.I), [
+        "Thinking about yourself again?",
+    ]),
 ]
 
 RORSCHACH_WORDS = [
@@ -100,5 +103,3 @@ def question_response(message):
         response += words[1] + '?'
         return response
             
-if __name__ == '__main__':
-    test_eliza()
